@@ -24,8 +24,8 @@ jobs:
       - name: Checkout samples-typescript repository
         uses: actions/checkout@v2
         with:
-        repository: keploy/samples-typescript
-        path: samples-typescript
+          repository: keploy/samples-typescript
+          path: samples-typescript
 
       - name: Run the express-mongoose app
         shell: powershell
