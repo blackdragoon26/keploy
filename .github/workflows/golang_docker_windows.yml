@@ -11,12 +11,12 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run build script
-      shell: powershell
+      shell: bash
       run: |
         .\.github\workflows\test_workflow_scripts\update-docker.ps1
 
     - name: Build binary
-      shell: powershell
+      shell: bash
       run: |
         go build -tags=viper_bind_struct -o keployv2.exe
 
@@ -27,7 +27,7 @@ jobs:
         path: samples-go
 
     - name: Run gin-mongo application
-      shell: powershell
+      shell: bash
       run: |
         cd samples-go/gin-mongo
         .\..\..\github\workflows\test_workflow_scripts\golang-docker.ps1

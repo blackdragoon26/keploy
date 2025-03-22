@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build Keploy binary
-      shell: powershell
+      shell: bash
       run: |
         go build -race -tags=viper_bind_struct -o keployv2.exe
 
@@ -22,20 +22,20 @@ jobs:
         path: samples-java
 
     - name: Install necessary dependencies
-      shell: powershell
+      shell: bash
       run: |
         cd samples-java/spring-petclinic/spring-petclinic-rest
         .\mvnw.cmd dependency:resolve
 
     - name: Compile the project
-      shell: powershell
+      shell: bash
       run: |
         cd samples-java/spring-petclinic/spring-petclinic-rest
         .\..\..\..\github\workflows\test_workflow_scripts\update-java.ps1
         .\mvnw.cmd compile
 
     - name: Run the spring-petclinic-rest app
-      shell: powershell
+      shell: bash
       run: |
         cd samples-java/spring-petclinic/spring-petclinic-rest
         .\..\..\..\github\workflows\test_workflow_scripts\java-windows.ps1
