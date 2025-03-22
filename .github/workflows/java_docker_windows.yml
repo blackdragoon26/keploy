@@ -1,0 +1,41 @@
+name: Java on Windows
+
+on: [pull_request]
+
+jobs:
+  java_windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Keploy binary
+      shell: powershell
+      run: |
+        go build -race -tags=viper_bind_struct -o keployv2.exe
+
+    - name: Checkout samples-java repository
+      uses: actions/checkout@v2
+      with:
+        repository: keploy/samples-java
+        path: samples-java
+
+    - name: Install necessary dependencies
+      shell: powershell
+      run: |
+        cd samples-java/spring-petclinic/spring-petclinic-rest
+        .\mvnw.cmd dependency:resolve
+
+    - name: Compile the project
+      shell: powershell
+      run: |
+        cd samples-java/spring-petclinic/spring-petclinic-rest
+        .\..\..\..\github\workflows\test_workflow_scripts\update-java.ps1
+        .\mvnw.cmd compile
+
+    - name: Run the spring-petclinic-rest app
+      shell: powershell
+      run: |
+        cd samples-java/spring-petclinic/spring-petclinic-rest
+        .\..\..\..\github\workflows\test_workflow_scripts\java-windows.ps1
