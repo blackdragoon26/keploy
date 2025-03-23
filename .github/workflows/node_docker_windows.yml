@@ -11,6 +11,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set GOMAXPROCS for Docker
+        uses: echo "GOMAXPROCS=2" >> $GITHUB_ENV
+
       - name: Allow PowerShell script execution
         shell: pwsh
         run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
