@@ -1,0 +1,38 @@
+---
+name: Node on Docker (Windows)
+
+on: [pull_request]
+
+jobs:
+  node_docker:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Allow PowerShell script execution
+        shell: pwsh
+        run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+    
+      - name: Run build script
+        shell: pwsh
+        run: |
+          .\.github\workflows\test_workflow_scripts\update-docker.ps1
+
+      - name: Build binary
+        shell: pwsh
+        run: |
+          go build -tags=viper_bind_struct -o keployv2.exe
+
+      - name: Checkout samples-typescript repository
+        uses: actions/checkout@v2
+        with:
+          repository: keploy/samples-typescript
+          path: samples-typescript
+
+      - name: Run the express-mongoose app
+        shell: pwsh
+        run: |
+          cd samples-typescript/express-mongoose
+          .github\workflows\test_workflow_scripts\node-docker.ps1

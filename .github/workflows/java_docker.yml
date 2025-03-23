@@ -1,0 +1,27 @@
+name: Java on Docker
+
+on: [pull_request]
+
+jobs:
+  java_docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Keploy binary
+      run: |
+        go build -race -tags=viper_bind_struct -o keployv2
+
+    - name: Checkout samples-java repository
+      uses: actions/checkout@v2
+      with:
+        repository: keploy/samples-java
+        path: samples-java
+
+    - name: Build and Run Java App in Docker
+      run: |
+        cd samples-java/spring-petclinic/spring-petclinic-rest
+        docker build -t java-app .
+        docker run -d -p 8080:8080 java-app
