@@ -11,13 +11,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Allow PowerShell script execution
+        shell: powershell
+        run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+    
       - name: Run build script
-        shell: bash
+        shell: powershell
         run: |
           .\.github\workflows\test_workflow_scripts\update-docker.ps1
 
       - name: Build binary
-        shell: bash
+        shell: powershell
         run: |
           go build -tags=viper_bind_struct -o keployv2.exe
 
@@ -28,7 +32,7 @@ jobs:
           path: samples-typescript
 
       - name: Run the express-mongoose app
-        shell: bash
+        shell: powershell
         run: |
           cd samples-typescript/express-mongoose
-          .\..\..\github\workflows\test_workflow_scripts\node-docker.ps1
+          .github\workflows\test_workflow_scripts\node-docker.ps1
