@@ -36,7 +36,7 @@ function New-DockerImage {
 # Main function to update the Dockerfile and build the Docker image
 function Main {
     Update-Dockerfile
-    New-DockerImage-DockerImage
+    New-DockerImage  
 }
 
 # Run the main function
