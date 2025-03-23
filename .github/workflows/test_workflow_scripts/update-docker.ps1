@@ -21,9 +21,11 @@ function Update-Dockerfile {
 function New-DockerImage {
     Write-Output "Building Docker image..."
 
-    # Build the Docker image
-    docker image build -t ghcr.io/keploy/keploy:v2-dev .
+    ## Set environment variable for PowerShell
+$Env:GOMAXPROCS = "2"
 
+# Build the Docker image with GOMAXPROCS passed as an argument
+docker image build --build-arg GOMAXPROCS=$Env:GOMAXPROCS -t ghcr.io/keploy/keploy:v2-dev .
     # Check if the command was successful
     if ($LASTEXITCODE -eq 0) {
         Write-Output "Docker image built successfully."
