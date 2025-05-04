@@ -19,6 +19,7 @@ COPY . /app
 # setting GOMAXPROCS to avoid crashing qemu while building different arch with docker buildx
 # ref - https://github.com/golang/go/issues/70329#issuecomment-2559049444
 RUN GOMAXPROCS=2 go build -tags=viper_bind_struct -ldflags="-X main.dsn=$SENTRY_DSN_DOCKER -X main.version=$VERSION -X main.apiServerURI=$SERVER_URL -X main.gitHubClientID=$GITTHUB_APP_CLIENT_ID" -o keploy .
+RUN env GOMAXPROCS=2 go build -tags=viper_bind_struct -ldflags="-X main.dsn=$SENTRY_DSN_DOCKER -X main.version=$VERSION -X main.apiServerURI=$SERVER_URL -X main.gitHubClientID=$GITTHUB_APP_CLIENT_ID" -o keploy .
 
 # === Runtime Stage ===
 FROM debian:bookworm-slim
